@@ -90,4 +90,6 @@ ENV/
 
 # Custom user-ignored files
 ___*
-
+.idea/*
+venv/*
+app/data/*
