@@ -10,11 +10,14 @@ from sklearn.decomposition import LatentDirichletAllocation
 class LDA:
     HYPERPARAMETERS = dict()
 
-    def __init__(self, n_topics, max_iter=5, learning_method='online', learning_offset=50.):
+    def __init__(self, n_topics, **sklearn_params):
+        """
+        Create an LDA algorithm. Some hyperparameters in arguments are adjustable.
+        For more info on the hyperparameters, visit:
+        http://scikit-learn.org/stable/modules/generated/sklearn.decomposition.LatentDirichletAllocation.html
+        """
         self.n_topics = n_topics
-        self.max_iter = max_iter
-        self.learning_method = learning_method
-        self.learning_offset = learning_offset
+        self.sklearn_params = sklearn_params
 
         self._stemmed_documents = []
         self._clusterized_documents = []
@@ -28,35 +31,61 @@ class LDA:
                                              ngram_range=self.ngram_range)
 
     def fit(self, lemmatized_dataset):
-        tf = self.tf_vectorizer.fit_transform(lemmatized_dataset)
+        """
+        Fit the LDA on a dataset. The dataset is a list of documents. A document is a string.
+        It's recommended that the documents be lemmatized and without stop words.
+        """
+        tf_features = self.tf_vectorizer.fit_transform(lemmatized_dataset)
 
-        lda = LatentDirichletAllocation(n_components=self.n_topics, max_iter=self.max_iter,
-                                        learning_method=self.learning_method,
-                                        learning_offset=self.learning_offset,
-                                        random_state=0)  # TODO: random state
-        lda.fit(tf)
+        self.lda_sklearn = LatentDirichletAllocation(
+            n_components=self.n_topics,
+            random_state=0,  # TODO: random state
+            **self.sklearn_params)
 
-        print("Topics in the LDA model:")
-
-        tf_feature_names = self.tf_vectorizer.get_feature_names()
-        self.print_top_words(lda, tf_feature_names, n_top_words=3)
+        # print("Topics in the LDA model:")
+        self.tf_feature_names = self.tf_vectorizer.get_feature_names()
+        self.lda_sklearn.fit(tf_features)
+        # self.print_top_words(lda, tf_feature_names, n_top_words=3)
 
         self._is_finished = True
 
-        return lda, tf_feature_names
+        return self.lda_sklearn, self.tf_feature_names
+
+    def transform(self, dataset):
+        tf_features = self.tf_vectorizer.transform(dataset)
+        self.lda_sklearn.transform(tf_features)
+
+    def score(self, dataset):
+        tf_features = self.tf_vectorizer.transform(dataset)
+        return self.lda_sklearn.score(tf_features)
+
+    def perplexity(self, dataset):
+        tf_features = self.tf_vectorizer.transform(dataset)
+        return self.lda_sklearn.perplexity(tf_features)
+
+    def is_finished(self):
+        """
+        TODO: May parallelize the class (async calls).
+        """
+        return self._is_finished
+
+    def get_topics(self, document):
+        """
+        Get the top topics for a document.
+        """
+        return self._clusterized_documents[document]
 
     def print_top_words(self, model, feature_names, n_top_words):
+        """
+        Get the best N words that represents each topic.
+        """
         for i, topic in enumerate(model.components_):
             top_topics = topic.argsort()[:-n_top_words - 1:-1]
             escape = lambda x: "'" + x + "'"
             print("topic #{}:".format(i), " ".join([escape(feature_names[i]) for i in top_topics]))
 
-
-    def is_finished(self):
-        return self._is_finished
-
-    def get_topics(self, document):
-        return self._clusterized_documents[document]
-
     def get_top_expressions_for_topic(self, topic):
+        """
+        TODO
+        """
         return self._topics[topic]
