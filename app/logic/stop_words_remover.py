@@ -1,8 +1,11 @@
+from sklearn.base import BaseEstimator, ClassifierMixin, TransformerMixin
+
+
 import string
 import unidecode
 
 
-class StopWordsRemover:
+class StopWordsRemover(TransformerMixin):
     def __init__(self):
         """
         Get the stop words at creation of the StopWordsRemover to then 
@@ -15,9 +18,33 @@ class StopWordsRemover:
             self.stopwords = f.read().split("\n")
         self.safe_stopwords = [unidecode.unidecode(w).lower() for w in self.stopwords]
 
-    def remove_from_many_strings(self, text):
+    def get_params(self, deep=True):
         """
-        This function only recurse and then call the single "self.remove_from_string(...)"
+        This function is implemented for the class to be usable by scikit-learn's Pipeline() behavior.
+        """
+        return dict()
+
+    def set_params(self, **parameters):
+        """
+        This function is implemented for the class to be usable by scikit-learn's Pipeline() behavior.
+        """
+        for parameter, value in parameters.items():
+            self.__setattr__(parameter, value)
+        return self
+
+    def fit(self, X=None, y=None):
+        """
+        This function is implemented for the class to be usable by scikit-learn's Pipeline() behavior.
+        X & y are ignored here, but required by convention.
+        """
+        return self
+
+    def transform(self, text):
+        """
+        This function is implemented for the class to be usable by scikit-learn's Pipeline() behavior.
+
+        This function only recurse and then call the single "self.remove_from_string(...)".
+        This means that this version is a vectorized version of "self.remove_from_string(...)"
         """
 
         if isinstance(text, str):
@@ -27,7 +54,7 @@ class StopWordsRemover:
             # It should be an iterable, recurse to find text at a lower branch deep down.
             ret_list = []
             for inner in text:
-                inner = self.remove_from_many_strings(inner)
+                inner = self.transform(inner)
                 ret_list.append(inner)
             return ret_list
 
@@ -80,3 +107,7 @@ class StopWordsRemover:
 
         past_text += last_punct
         return past_text[:-1]
+
+    def inverse_transform(self, text):
+        return text
+
