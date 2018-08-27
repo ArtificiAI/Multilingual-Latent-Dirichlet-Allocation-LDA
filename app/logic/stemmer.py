@@ -4,7 +4,7 @@
 # (It's a mix of the MIT License and the BSD 3-Clause License)
 
 
-from sklearn.base import BaseEstimator, ClassifierMixin, TransformerMixin
+from sklearn.base import TransformerMixin
 import Stemmer as st
 
 from string import punctuation

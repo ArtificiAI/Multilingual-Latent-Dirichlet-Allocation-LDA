@@ -9,11 +9,10 @@ class CountVectorizer(CV):
 
         Return a list of words for each document, keeping the order of the transformed words indexes.
         """
+        self._check_vocabulary()
 
         all_undid = []  # Let's undo that.
         for doc in X:
             undid_doc = [self.get_feature_names()[i] for i in doc]
             all_undid.append(undid_doc)
         return all_undid
-
-        self._check_vocabulary()

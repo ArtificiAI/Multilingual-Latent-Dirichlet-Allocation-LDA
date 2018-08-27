@@ -1,4 +1,4 @@
-from sklearn.base import BaseEstimator, ClassifierMixin, TransformerMixin
+from sklearn.base import TransformerMixin
 
 
 import string
@@ -110,4 +110,3 @@ class StopWordsRemover(TransformerMixin):
 
     def inverse_transform(self, text):
         return text
-

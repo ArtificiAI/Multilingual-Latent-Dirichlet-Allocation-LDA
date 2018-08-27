@@ -49,4 +49,3 @@ class LDA(LatentDirichletAllocation):
             top_topics = topic.argsort()[:-n_top_words - 1:-1]
             escape = lambda x: "'" + x + "'"
             print("topic #{}:".format(i), " ".join([escape(feature_names[i]) for i in top_topics]))
-
