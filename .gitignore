@@ -93,3 +93,5 @@ ___*
 .idea/*
 venv/*
 app/data/*
+.pytest_cache/
+

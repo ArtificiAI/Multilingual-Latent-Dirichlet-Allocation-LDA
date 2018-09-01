@@ -1,12 +1,15 @@
-from sklearn.base import TransformerMixin
+import os
 
+from sklearn.base import TransformerMixin
 
 import string
 import unidecode
 
+STOPWORDS_FILENAME = "custom_FR_EN_stop_words.txt"
+
 
 class StopWordsRemover(TransformerMixin):
-    def __init__(self):
+    def __init__(self, stopwords=None):
         """
         Get the stop words at creation of the StopWordsRemover to then 
         be able to remove them from strings or nested iterables of strings.
@@ -14,8 +17,13 @@ class StopWordsRemover(TransformerMixin):
         This stop word remover is built so as to be very gentle with the
         input strings so as to keep their structure as much as possible.
         """
-        with open("app/data/custom_FR_EN_stop_words.txt") as f:
-            self.stopwords = f.read().split("\n")
+        if stopwords is None:
+            current_dir = os.path.dirname(os.path.realpath(__file__))
+            stop_words_file = os.path.join(current_dir, "..", "data", STOPWORDS_FILENAME)
+            with open(stop_words_file) as f:
+                self.stopwords = f.read().split("\n")
+        else:
+            self.stopwords = stopwords
         self.safe_stopwords = [unidecode.unidecode(w).lower() for w in self.stopwords]
 
     def get_params(self, deep=True):

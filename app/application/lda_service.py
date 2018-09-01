@@ -1,14 +1,14 @@
-from app.application.data_utils import topics_and_weightings_to_associated_dict
+from app.application.data_utils import link_topics_and_weightings
 from app.logic.letter_splitter import LetterSplitter
 from app.logic.stop_words_remover import StopWordsRemover
-from app.logic.stemmer import Stemmer
+from app.logic.stemmer import Stemmer, FRENCH
 from app.logic.lda import LDA
 from app.logic.count_vectorizer import CountVectorizer
 
 from sklearn.pipeline import Pipeline
 
-lda_pipeline_params = {
-    'stemmer__language': 'french',
+LDA_PIPELINE_PARAMS = {
+    'stemmer__language': FRENCH,
     'count_vect__max_df': 0.98,
     'count_vect__min_df': 2,
     'count_vect__max_features': 10000,
@@ -49,7 +49,7 @@ def train_default_lda_pipeline(comments, use_letters_instead_of_words=False):
             ('lda', LDA()),
         ])
 
-    lda_pipeline.set_params(**lda_pipeline_params)
+    lda_pipeline.set_params(**LDA_PIPELINE_PARAMS)
 
     # Fit the data
     transformed_comments = lda_pipeline.fit_transform(comments)
@@ -62,4 +62,4 @@ def train_default_lda_pipeline(comments, use_letters_instead_of_words=False):
     topics = lda.components_
     topic_words_weighting = [list(reversed(sorted(t))) for t in topics]
 
-    return transformed_comments, topics_and_weightings_to_associated_dict(topic_words, topic_words_weighting)
+    return transformed_comments, link_topics_and_weightings(topic_words, topic_words_weighting)

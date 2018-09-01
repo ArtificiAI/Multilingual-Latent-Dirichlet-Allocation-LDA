@@ -10,9 +10,12 @@ import Stemmer as st
 from string import punctuation
 import unidecode
 
+FRENCH = 'french'
+ENGLISH = 'english'
+
 
 class Stemmer(TransformerMixin):
-    def __init__(self, language='french'):
+    def __init__(self, language=FRENCH):
         """
         Create a stemmer (a.k.a. lemmatizer) for a specific language supported by snowball's algorithms.
         It's a wrapper to the PyStemmer (Stemmer) open-source library.
@@ -40,6 +43,12 @@ class Stemmer(TransformerMixin):
         This function is implemented for the class to be usable by scikit-learn's Pipeline() behavior.
         X & y are ignored here, but required by convention.
         """
+
+        # TODO: safer and cleaner to do this here, otherwise doing this only once at transform time would be faster.
+        # If done at transform time, the present method would only do `return self`.
+        for document in X:
+            self.stem_document(document, re_fit=True)
+
         return self
 
     def transform(self, documents):
@@ -50,27 +59,31 @@ class Stemmer(TransformerMixin):
         It may mess with punctuation and special characters.
         """
         stemmed_documents = []
-
         for doc in documents:
+            stemmed_document = self.stem_document(doc, re_fit=False)
+            stemmed_documents.append(stemmed_document)
+        return stemmed_documents
 
-            # Ignore punctuation and split on spaces.
-            for punctuation_character in punctuation:
-                doc = doc.replace(
-                    # punctuation_character, " {} ".format(punctuation_character)
-                    punctuation_character, " ".format(punctuation_character)
-                )
-            doc = doc.replace("  ", " ").replace("  ", " ").strip()
+    def stem_document(self, doc, re_fit):
+        # Ignore punctuation and split on spaces.
+        for punctuation_character in punctuation:
+            doc = doc.replace(
+                # punctuation_character, " {} ".format(punctuation_character)
+                punctuation_character, " ".format(punctuation_character)
+            )
+        doc = doc.replace("  ", " ").replace("  ", " ").strip()
 
-            # words_or_punct = doc.split(" ")
-            # stemmer = st.Stemmer(self.language)
-            # stemmed_words = stemmer.stemWords(words_or_punct)
+        # words_or_punct = doc.split(" ")
+        # stemmer = st.Stemmer(self.language)
+        # stemmed_words = stemmer.stemWords(words_or_punct)
 
-            # Stemmed words won't have accents nor capital letters anymore.
-            transformed_words = [unidecode.unidecode(w).lower() for w in doc.split(" ")]
-            words = doc.split(" ")
-            stemmer = st.Stemmer(self.language)
-            stemmed_words = stemmer.stemWords(transformed_words)
+        # Stemmed words won't have accents nor capital letters anymore.
+        transformed_words = [unidecode.unidecode(w).lower() for w in doc.split(" ")]
+        words = doc.split(" ")
+        stemmer = st.Stemmer(self.language)
+        stemmed_words = stemmer.stemWords(transformed_words)
 
+        if re_fit:
             # Keep track of things for inverse stemming: each word has its count.
             # But the inverse relationship is not deterministic: we need to count occurences
             # because we need the TOP equivalent word back.
@@ -85,13 +98,10 @@ class Stemmer(TransformerMixin):
                         self.stemmed_word_to_equiv_word_count[_stemmed_word][_word] = 1
                 else:
                     self.stemmed_word_to_equiv_word_count[_stemmed_word] = {_word: 1}
-                _word, _stemmed_word
 
+        else:
             stemmed_document = " ".join(stemmed_words)
-
-            stemmed_documents.append(stemmed_document)
-
-        return stemmed_documents
+            return stemmed_document
 
     def inverse_transform(self, stemmed_documents):
 
