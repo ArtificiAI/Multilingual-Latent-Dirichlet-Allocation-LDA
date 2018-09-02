@@ -31,12 +31,18 @@ class LetterSplitter(TransformerMixin):
         """
         This function is implemented for the class to be usable by scikit-learn's Pipeline() behavior.
 
-        This function only recurse and then call the single "self.remove_from_string(...)".
-        This means that this version is a vectorized version of "self.remove_from_string(...)"
+        Here, we transform words to
         """
         return [self.ngrams(example) for example in text]
 
     def ngrams(self, strin):
+        """
+        String to a list of n-grams, where each gram is a letter (not a word).
+
+        :param strin: a string
+        :return: the string splitted on n-grams letter. What were spaces are now underscores, and the new spaces
+            now are n-grams delimiters.
+        """
         a = []
         b = []
         c = []
@@ -44,6 +50,7 @@ class LetterSplitter(TransformerMixin):
         r1 = ''
         r2 = ''
         for r in strin:
+            r = r.replace(" ", "_")
             aa = r
             bb = r1 + aa
             cc = r2 + bb
@@ -59,9 +66,9 @@ class LetterSplitter(TransformerMixin):
         c = c[2:]
 
         # result = " xyz".join(a) + " xyz".join(b) + " xyz".join(c)
-        result = " xyz".join(b) + " xyz".join(c * 3)
+        result = " ".join(b) + " " + " ".join(c * 3)
         result = result.replace("  ", " ")
         return result
 
     def inverse_transform(self, text):
-        return ["".join(example).replace(" xyz", "") for example in text]
+        return [[expr.replace("_", " ") for expr in example] for example in text]

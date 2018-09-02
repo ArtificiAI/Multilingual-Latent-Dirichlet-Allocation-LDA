@@ -1,5 +1,5 @@
-from app.application.data_utils import remove_prefix
-from app.application.lda_service import LDA_PIPELINE_PARAMS
+from app.application.data_utils import get_params_from_prefix_dict
+from app.application.lda_service import LDA_PIPELINE_PARAMS_WORDS
 from app.logic.count_vectorizer import CountVectorizer
 from tests.const_utils import \
     CATS_DOGS_COMMENTS_IN_FRENCH_WITHOUT_STOPWORDS_STEMMED, \
@@ -28,7 +28,7 @@ def test_count_vectorizer_inverse_transform_topics():
 
 def get_vectorized():
     param_prefix = "count_vect__"
-    count_vectorizer_params = remove_prefix(param_prefix, LDA_PIPELINE_PARAMS)
+    count_vectorizer_params = get_params_from_prefix_dict(param_prefix, LDA_PIPELINE_PARAMS_WORDS)
     cv = CountVectorizer(**count_vectorizer_params)  # param dict to named arguments.
     vectorized = cv.fit_transform(CATS_DOGS_COMMENTS_IN_FRENCH_WITHOUT_STOPWORDS_STEMMED).toarray()
     return cv, vectorized

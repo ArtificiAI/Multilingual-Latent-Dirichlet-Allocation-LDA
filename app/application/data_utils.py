@@ -18,9 +18,16 @@ def link_topics_and_weightings(topic_words, topic_words_weighting):
     return topics_and_words
 
 
-def remove_prefix(param_prefix, lda_pipeline_params):
+def get_params_from_prefix_dict(param_prefix, lda_pipeline_params):
+    """
+    Strip away the param_prefix from the lda_pipeline_params' keys.
+
+    :param param_prefix: string such as 'lda__' or 'stemmer__'.
+    :param lda_pipeline_params: dict such as {'lda__learning_decay': 0.5, 'stemmer__language': 'french',}
+    :return: the lda_pipeline_params with only the keys from the prefix, such as for example:
+        {'learning_decay': 0.5} is returned from the example if the param_prefix was set to 'lda__'.
+    """
     count_vectorizer_params = {
-        # Simply strip away the param_prefix from the param keys:
         param[len(param_prefix):]: val
         for (param, val) in lda_pipeline_params.items()
         if param[:len(param_prefix)] == param_prefix

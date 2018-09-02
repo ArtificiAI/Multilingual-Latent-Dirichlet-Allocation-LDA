@@ -41,7 +41,7 @@ class Stemmer(TransformerMixin):
     def fit(self, X=None, y=None):
         """
         This function is implemented for the class to be usable by scikit-learn's Pipeline() behavior.
-        X & y are ignored here, but required by convention.
+        y is ignored here, but required by convention.
         """
 
         # TODO: safer and cleaner to do this here, otherwise doing this only once at transform time would be faster.
@@ -65,6 +65,14 @@ class Stemmer(TransformerMixin):
         return stemmed_documents
 
     def stem_document(self, doc, re_fit):
+        """
+        Stem the documents, and prepare the stemmer for the inverse_transform by keeping track of
+        a mapping back to the original expressions and their counts.
+
+        :param doc: document string
+        :param re_fit: boolean, if True, it will prepare the stemmer for the inverse_transform by saving state.
+        :return: stemmed document string
+        """
         # Ignore punctuation and split on spaces.
         for punctuation_character in punctuation:
             doc = doc.replace(
@@ -104,6 +112,12 @@ class Stemmer(TransformerMixin):
             return stemmed_document
 
     def inverse_transform(self, stemmed_documents):
+        """
+        Stemmed words to a guess of the original words. Documents are lists of words.
+
+        :param stemmed_documents: a list of documents. Specially here, a document isn't a string, but a list of words.
+        :return: a guess of unstemmed documents. Each document is a list of words, not a string.
+        """
 
         all_reversed_words = []
 
@@ -115,6 +129,12 @@ class Stemmer(TransformerMixin):
         return all_reversed_words
 
     def find_orig_word(self, word):
+        """
+        Guess what was the original word from the state saved during the fit(...) method.
+
+        :param word: a string
+        :return: a string of a guess of the original word.
+        """
 
         if " " in word:
             # If there is a space, this means some words were combined into n-grams.

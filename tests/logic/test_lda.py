@@ -1,7 +1,7 @@
 import numpy as np
 
-from app.application.data_utils import remove_prefix
-from app.application.lda_service import LDA_PIPELINE_PARAMS
+from app.application.data_utils import get_params_from_prefix_dict
+from app.application.lda_service import LDA_PIPELINE_PARAMS_WORDS
 from app.logic.lda import LDA
 from tests.const_utils import \
     CATS_DOGS_COMMENTS_IN_FRENCH_WITHOUT_STOPWORDS_STEMMED_VECTORIZED, \
@@ -42,7 +42,7 @@ def test_lda_inverse_transform_topics():
 
 def get_lda():
     param_prefix = "lda__"
-    lda_params = remove_prefix(param_prefix, LDA_PIPELINE_PARAMS)
+    lda_params = get_params_from_prefix_dict(param_prefix, LDA_PIPELINE_PARAMS_WORDS)
     lda = LDA(**lda_params)  # param dict to named arguments.
     clusterized = lda.fit_transform(CATS_DOGS_COMMENTS_IN_FRENCH_WITHOUT_STOPWORDS_STEMMED_VECTORIZED)
     return lda, clusterized
