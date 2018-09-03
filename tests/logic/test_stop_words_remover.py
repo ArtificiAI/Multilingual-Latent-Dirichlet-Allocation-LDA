@@ -1,4 +1,4 @@
-from app.logic.stop_words_remover import StopWordsRemover
+from lda_service.logic.stop_words_remover import StopWordsRemover
 from tests.const_utils import \
     TEST_STOPWORDS, \
     CATS_DOGS_COMMENTS_IN_FRENCH_NORMAL, \

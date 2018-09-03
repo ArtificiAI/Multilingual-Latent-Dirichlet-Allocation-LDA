@@ -1,4 +1,4 @@
-from app.application.data_utils import link_topics_and_weightings
+from lda_service.data_utils import link_topics_and_weightings
 
 
 def test_link_topics_and_weightings_works():

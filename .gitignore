@@ -92,6 +92,6 @@ ENV/
 ___*
 .idea/*
 venv/*
-app/data/*
+lda_service/data/*
 .pytest_cache/
 

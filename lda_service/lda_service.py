@@ -1,10 +1,10 @@
-from app.application.data_utils import link_topics_and_weightings, get_top_comments, split_1_grams_from_n_grams, \
+from lda_service.data_utils import link_topics_and_weightings, get_top_comments, split_1_grams_from_n_grams, \
     get_lda_params_with_specific_n_cluster_or_language
-from app.logic.letter_splitter import LetterSplitter
-from app.logic.stop_words_remover import StopWordsRemover
-from app.logic.stemmer import Stemmer, FRENCH, ENGLISH
-from app.logic.lda import LDA
-from app.logic.count_vectorizer import CountVectorizer
+from lda_service.logic.letter_splitter import LetterSplitter
+from lda_service.logic.stop_words_remover import StopWordsRemover
+from lda_service.logic.stemmer import Stemmer, FRENCH
+from lda_service.logic.lda import LDA
+from lda_service.logic.count_vectorizer import CountVectorizer
 
 from sklearn.pipeline import Pipeline
 

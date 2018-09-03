@@ -28,7 +28,6 @@ def split_1_grams_from_n_grams(topics_weightings):
     _n_grams = [[] for _ in range(len(topics_weightings))]
 
     for i, topic_words_list in enumerate(topics_weightings):
-        print(i)
         for word, weighting in topic_words_list:
             tuple_entries = (word, weighting)
             if ' ' in word:

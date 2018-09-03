@@ -1,8 +1,8 @@
 import numpy as np
 
-from app.application.data_utils import get_params_from_prefix_dict
-from app.application.lda_service import LDA_PIPELINE_PARAMS_WORDS
-from app.logic.lda import LDA
+from lda_service.data_utils import get_params_from_prefix_dict
+from lda_service.lda_service import LDA_PIPELINE_PARAMS_WORDS
+from lda_service.logic.lda import LDA
 from tests.const_utils import \
     CATS_DOGS_COMMENTS_IN_FRENCH_WITHOUT_STOPWORDS_STEMMED_VECTORIZED, \
     CATS_DOGS_COMMENTS_IN_FRENCH_WITHOUT_STOPWORDS_STEMMED_VECTORIZED_LDA_TOPICS_INVERSE_TRANSFORM_1, \

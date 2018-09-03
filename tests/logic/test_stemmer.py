@@ -1,4 +1,4 @@
-from app.logic.stemmer import Stemmer, FRENCH
+from lda_service.logic.stemmer import Stemmer, FRENCH
 from tests.const_utils import \
     CATS_DOGS_COMMENTS_IN_FRENCH_WITHOUT_STOPWORDS, \
     CATS_DOGS_COMMENTS_IN_FRENCH_WITHOUT_STOPWORDS_STEMMED, \

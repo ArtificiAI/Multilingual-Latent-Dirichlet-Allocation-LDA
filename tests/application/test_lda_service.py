@@ -1,7 +1,7 @@
-from app.application.lda_service import \
+from lda_service.lda_service import \
     train_lda_pipeline_default, \
     train_lda_pipeline_on_words
-from app.logic.stemmer import FRENCH
+from lda_service.logic.stemmer import FRENCH
 from tests.const_utils import \
     CATS_DOGS_COMMENTS_IN_FRENCH_NORMAL, \
     CATS_DOGS_LABELS_A, \
