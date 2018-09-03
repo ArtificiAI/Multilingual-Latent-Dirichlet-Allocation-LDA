@@ -11,20 +11,13 @@ STOPWORDS_FILENAME = "custom_FR_EN_stop_words.txt"
 class StopWordsRemover(TransformerMixin):
     def __init__(self, stopwords=None):
         """
-        Get the stop words at creation of the StopWordsRemover to then 
-        be able to remove them from strings or nested iterables of strings.
-
         This stop word remover is built so as to be very gentle with the
         input strings so as to keep their structure as much as possible.
+
+        If no stopwords are passed, it will try to load them from disks at the path of `STOPWORDS_FILENAME`.
         """
-        if stopwords is None:
-            current_dir = os.path.dirname(os.path.realpath(__file__))
-            stop_words_file = os.path.join(current_dir, "..", "data", STOPWORDS_FILENAME)
-            with open(stop_words_file) as f:
-                self.stopwords = f.read().split("\n")
-        else:
-            self.stopwords = stopwords
-        self.safe_stopwords = [unidecode.unidecode(w).lower() for w in self.stopwords]
+        self.stopwords = stopwords
+        self.safe_stopwords = None
 
     def get_params(self, deep=True):
         """
@@ -44,7 +37,17 @@ class StopWordsRemover(TransformerMixin):
         """
         This function is implemented for the class to be usable by scikit-learn's Pipeline() behavior.
         X & y are ignored here, but required by convention.
+
+        It reads the stopwords from disk if there are none provided.
         """
+
+        if self.stopwords is None:
+            current_dir = os.path.dirname(os.path.realpath(__file__))
+            stop_words_file = os.path.join(current_dir, "..", "data", STOPWORDS_FILENAME)
+            with open(stop_words_file) as f:
+                self.stopwords = f.read().split("\n")
+        self.safe_stopwords = [unidecode.unidecode(w).lower() for w in self.stopwords]
+
         return self
 
     def transform(self, text):
@@ -54,6 +57,8 @@ class StopWordsRemover(TransformerMixin):
         This function only recurse and then call the single "self.remove_from_string(...)".
         This means that this version is a vectorized version of "self.remove_from_string(...)"
         """
+        if self.safe_stopwords is None:
+            self.fit()
 
         if isinstance(text, str):
             return self.remove_from_string(text)

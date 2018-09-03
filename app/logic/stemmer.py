@@ -3,22 +3,28 @@
 # For more information on PyStemmer's license, see: https://github.com/snowballstem/pystemmer
 # (It's a mix of the MIT License and the BSD 3-Clause License)
 
+from string import punctuation
+import unidecode
+import sys
 
 from sklearn.base import TransformerMixin
 import Stemmer as st
 
-from string import punctuation
-import unidecode
-
 FRENCH = 'french'
 ENGLISH = 'english'
 
+
+# Refer to snowball lemmatizer's documentation for a list of languages.
+# http://snowball.tartarus.org/texts/stemmersoverview.html
 
 class Stemmer(TransformerMixin):
     def __init__(self, language=FRENCH):
         """
         Create a stemmer (a.k.a. lemmatizer) for a specific language supported by snowball's algorithms.
         It's a wrapper to the PyStemmer (Stemmer) open-source library.
+
+        :param language: the language, refer to snowball lemmatizer's documentation for a list
+            of languages. Example: 'french', 'english'. http://snowball.tartarus.org/texts/stemmersoverview.html
         """
         self.language = language
 
@@ -147,7 +153,8 @@ class Stemmer(TransformerMixin):
             # Note: a DefaultDict may be used here to remove this try/except.
             orig_words = self.stemmed_word_to_equiv_word_count[word]
         except:
-            print("Warning: word '{}' not found in vocabulary for inverse stemming.".format(word))
+            print("Warning, stemmer.py, find_orig_word('{}'): "
+                  "word '{}' not found in vocabulary for inverse stemming.".format(word, word), file=sys.stderr)
             return ""
         # Compare original words on their count which is the last "-1" item of tuples from the inner dicts.
         return max(list(orig_words.items()), key=lambda item: item[-1])[0]

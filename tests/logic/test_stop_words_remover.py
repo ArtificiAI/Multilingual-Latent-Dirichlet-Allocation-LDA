@@ -8,7 +8,7 @@ from tests.const_utils import \
 def test_stopwords_removal_transform():
     swr = StopWordsRemover(stopwords=TEST_STOPWORDS)
 
-    result = swr.transform(CATS_DOGS_COMMENTS_IN_FRENCH_NORMAL)
+    result = swr.fit_transform(CATS_DOGS_COMMENTS_IN_FRENCH_NORMAL)
 
     print("")
     print(result)
@@ -18,11 +18,12 @@ def test_stopwords_removal_transform():
 
 def test_stopwords_inverse_transform():
     swr = StopWordsRemover(stopwords=TEST_STOPWORDS)
-    result = swr.transform(CATS_DOGS_COMMENTS_IN_FRENCH_WITHOUT_STOPWORDS)
+    swr.fit()
+    result = swr.fit_transform(CATS_DOGS_COMMENTS_IN_FRENCH_WITHOUT_STOPWORDS)
 
     inverted_undone = swr.inverse_transform(result)
 
     print("")
     print(result)
     print(inverted_undone)
-    assert result == inverted_undone  # TODO: behavior is unchanged. Could be improved.
+    assert result == inverted_undone  # TODO: behavior is unchanged. Could be improved?

@@ -1,14 +1,16 @@
-from app.application.data_utils import link_topics_and_weightings
+from app.application.data_utils import link_topics_and_weightings, get_top_comments, split_1_grams_from_n_grams, \
+    get_lda_params_with_specific_n_cluster_or_language
 from app.logic.letter_splitter import LetterSplitter
 from app.logic.stop_words_remover import StopWordsRemover
-from app.logic.stemmer import Stemmer, FRENCH
+from app.logic.stemmer import Stemmer, FRENCH, ENGLISH
 from app.logic.lda import LDA
 from app.logic.count_vectorizer import CountVectorizer
 
 from sklearn.pipeline import Pipeline
 
 LDA_PIPELINE_PARAMS_WORDS = {
-    'stemmer__language': FRENCH,
+    'stopwords__stopwords': None,
+    'stemmer__language': FRENCH,  # ENGLISH
     'count_vect__max_df': 0.98,
     'count_vect__min_df': 2,
     'count_vect__max_features': 10000,
@@ -24,7 +26,8 @@ LDA_PIPELINE_PARAMS_WORDS = {
 }
 
 LDA_PIPELINE_PARAMS_LETTERS = {
-    # No language here, so no `'stemmer__language': FRENCH,`.
+    'stopwords__stopwords': None,
+    # No stemmer here, so no language 'stemmer__language' is set.
     'count_vect__max_df': 0.98,
     'count_vect__min_df': 2,
     'count_vect__max_features': 10000,
@@ -40,41 +43,50 @@ LDA_PIPELINE_PARAMS_LETTERS = {
 }
 
 
-def train_lda_pipeline_default(comments):
+def train_lda_pipeline_default(comments, n_topics=2, language=FRENCH, stopwords=None):
     """
     Try to train a pipeline on ngrams of words, and if it fails (because no words were found), try on ngrams of letters.
 
     :param comments: a list of strings
+    :param n_topics: the number of clusters (categories, groups, or topics) to find.
+    :param language: the language, refer to snowball lemmatizer's documentation for a list
+        of languages. Example: 'french', 'english'. http://snowball.tartarus.org/texts/stemmersoverview.html
     :return: a list containing the topic probabilities for each comment, and another list containing topics if it
         trained on words, where each topic is a list of tuples, where each of those tuples are of the form
         (str('word'), float(importance_of_word)), sorted by the importance of each word (most important comes first).
     """
     try:
-        return train_lda_pipeline_on_words(comments)
+        return train_lda_pipeline_on_words(comments, n_topics=n_topics, language=language, stopwords=stopwords)
     except:
-        return train_lda_pipeline_on_letters(comments)
+        return train_lda_pipeline_on_letters(comments, n_topics=n_topics, stopwords=stopwords)
 
 
-def train_lda_pipeline_on_words(comments):
+def train_lda_pipeline_on_words(comments, n_topics=2, language=FRENCH, stopwords=None):
     """
     Train an LDA and transform the comments.
 
     :param comments: a list of strings
         call to this method failed to extract word features from the CountVectorizer.
+    :param n_topics: the number of clusters (categories, groups, or topics) to find.
+    :param language: the language, refer to snowball lemmatizer's documentation for a list
+        of languages. Example: 'french', 'english'. http://snowball.tartarus.org/texts/stemmersoverview.html
     :return: a list containing the topic probabilities for each comment, and another list containing topics, where each
         topic is a list of tuples, where each of those tuples are of the form (str('word'), float(importance_of_word)),
         sorted by the importance of each word (most important comes first).
     """
+    params = get_lda_params_with_specific_n_cluster_or_language(
+        LDA_PIPELINE_PARAMS_WORDS, n_topics=n_topics, language=language, stopwords=stopwords)
+
     lda_pipeline = Pipeline([
         ('stopwords', StopWordsRemover()),
         ('stemmer', Stemmer()),
         ('count_vect', CountVectorizer()),
         ('lda', LDA()),
-    ]).set_params(**LDA_PIPELINE_PARAMS_WORDS)
+    ]).set_params(**params)
 
     # Fit the data
     transformed_comments = lda_pipeline.fit_transform(comments)
-    print("score:", lda_pipeline.score(comments))
+    # print("score:", lda_pipeline.score(comments))
 
     # Extract information about data
     lda = lda_pipeline.named_steps['lda']
@@ -83,29 +95,41 @@ def train_lda_pipeline_on_words(comments):
     topics = lda.components_
     topic_words_weighting = [list(reversed(sorted(t))) for t in topics]
 
-    return transformed_comments, link_topics_and_weightings(topic_words, topic_words_weighting)
+    # Manipulations on the information for a clean return.
+    topics_words_and_weightings = link_topics_and_weightings(topic_words, topic_words_weighting)
+    top_comments = get_top_comments(comments, transformed_comments)
+    _1_grams, _2_grams = split_1_grams_from_n_grams(topics_words_and_weightings)
+
+    return transformed_comments, top_comments, _1_grams, _2_grams
 
 
-def train_lda_pipeline_on_letters(comments):
+def train_lda_pipeline_on_letters(comments, n_topics=2, stopwords=None):
     """
     Train an LDA and transform the comments.
 
     :param comments: a list of strings
-    :param use_letters_instead_of_words: boolean, set to True only if a first
-        call to this method failed to extract word features from the CountVectorizer.
+    :param n_topics: the number of clusters (categories, groups, or topics) to find.
+    :param language: the language, refer to snowball lemmatizer's documentation for a list
+        of languages. Example: 'french', 'english'.
     :return: a list containing the topic probabilities for each comment, and another list that is empty but that
         would normally contain topics' descriptions.
     """
+    params = get_lda_params_with_specific_n_cluster_or_language(
+        LDA_PIPELINE_PARAMS_LETTERS, n_topics=n_topics, stopwords=stopwords)
+
     lda_pipeline = Pipeline([
         ('stopwords', StopWordsRemover()),
         ('letter_splitter', LetterSplitter()),
         ('count_vect', CountVectorizer()),
         ('lda', LDA()),
-    ]).set_params(**LDA_PIPELINE_PARAMS_LETTERS)
+    ]).set_params(**params)
 
     # Fit the data
     transformed_comments = lda_pipeline.fit_transform(comments)
-    print("score:", lda_pipeline.score(comments))
+    # print("score:", lda_pipeline.score(comments))
 
-    no_info_for_topics = [[]] * LDA_PIPELINE_PARAMS_LETTERS['lda__n_components']
-    return transformed_comments, no_info_for_topics
+    no_info_for_topics = [[] for _ in range(LDA_PIPELINE_PARAMS_LETTERS['lda__n_components'])]
+
+    top_comments = get_top_comments(comments, transformed_comments)
+
+    return transformed_comments, top_comments, no_info_for_topics, no_info_for_topics
