@@ -55,6 +55,10 @@ array([[0.14218195, 0.85781805],
  [('super chats',  2.492102155345991 )]]
 ```
 
+## How it works
+
+See [Multilingual-LDA-Pipeline-Tutorial](https://github.com/ArtificiAI/Multilingual-Latent-Dirichlet-Allocation-LDA/blob/master/Multilingual-LDA-Pipeline-Tutorial.ipynb) for an exhaustive example (intended to be read from top to bottom, not skimmed through). For more explanations on the Inverse Lemmatization, see [Stemming-words-from-multiple-languages](https://github.com/ArtificiAI/Multilingual-Latent-Dirichlet-Allocation-LDA/blob/master/Stemming-words-from-multiple-languages.ipynb).
+
 ## Supported Languages
 
 Those languages are supported:
@@ -86,10 +90,6 @@ scikit-learn==0.19.1    # BSD-3-Clause
 PyStemmer==1.3.0        # BSD-3-Clause and MIT
 snowballstemmer==1.2.1  # BSD-3-Clause and BSD-2-Clause
 ```
-
-## How it works
-
-See [Multilingual-LDA-Pipeline-Tutorial](https://github.com/ArtificiAI/Multilingual-Latent-Dirichlet-Allocation-LDA/blob/master/Multilingual-LDA-Pipeline-Tutorial.ipynb) for an exhaustive example (intended to be read from top to bottom, not skimmed through). For more explanations on the Inverse Lemmatization, see [Stemming-words-from-multiple-languages](https://github.com/ArtificiAI/Multilingual-Latent-Dirichlet-Allocation-LDA/blob/master/Stemming-words-from-multiple-languages.ipynb).
 
 ## Unit tests
 
