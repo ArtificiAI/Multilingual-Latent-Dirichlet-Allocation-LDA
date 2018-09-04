@@ -88,3 +88,10 @@ def get_lda_params_with_specific_n_cluster_or_language(lda_pipeline_params,
         assert 'stopwords__stopwords' in list(lda_pipeline_params.keys())
         lda_pipeline_params['stopwords__stopwords'] = stopwords
     return lda_pipeline_params
+
+
+def get_word_weightings(lda_pipeline):
+    lda = lda_pipeline.named_steps['lda']
+    topics = lda.components_
+    topic_words_weighting = [list(reversed(sorted(t))) for t in topics]
+    return topic_words_weighting

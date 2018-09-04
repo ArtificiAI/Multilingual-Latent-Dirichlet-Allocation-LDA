@@ -1,5 +1,5 @@
 from lda_service.data_utils import link_topics_and_weightings, get_top_comments, split_1_grams_from_n_grams, \
-    get_lda_params_with_specific_n_cluster_or_language
+    get_lda_params_with_specific_n_cluster_or_language, get_word_weightings
 from lda_service.logic.letter_splitter import LetterSplitter
 from lda_service.logic.stop_words_remover import StopWordsRemover
 from lda_service.logic.stemmer import Stemmer, FRENCH
@@ -86,18 +86,14 @@ def train_lda_pipeline_on_words(comments, n_topics=2, language=FRENCH, stopwords
 
     # Fit the data
     transformed_comments = lda_pipeline.fit_transform(comments)
-    # print("score:", lda_pipeline.score(comments))
+    top_comments = get_top_comments(comments, transformed_comments)
 
     # Extract information about data
-    lda = lda_pipeline.named_steps['lda']
-    # features = lda_pipeline.named_steps['count_vect'].get_feature_names()
     topic_words = lda_pipeline.inverse_transform(X=None)
-    topics = lda.components_
-    topic_words_weighting = [list(reversed(sorted(t))) for t in topics]
+    topic_words_weighting = get_word_weightings(lda_pipeline)
+    topics_words_and_weightings = link_topics_and_weightings(topic_words, topic_words_weighting)
 
     # Manipulations on the information for a clean return.
-    topics_words_and_weightings = link_topics_and_weightings(topic_words, topic_words_weighting)
-    top_comments = get_top_comments(comments, transformed_comments)
     _1_grams, _2_grams = split_1_grams_from_n_grams(topics_words_and_weightings)
 
     return transformed_comments, top_comments, _1_grams, _2_grams

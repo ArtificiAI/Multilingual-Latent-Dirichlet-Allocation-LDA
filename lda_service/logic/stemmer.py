@@ -14,8 +14,9 @@ FRENCH = 'french'
 ENGLISH = 'english'
 
 
-# Refer to snowball lemmatizer's documentation for a list of languages.
-# http://snowball.tartarus.org/texts/stemmersoverview.html
+# More languages:
+# ['danish', 'dutch', 'english', 'finnish', 'french', 'german', 'hungarian', 'italian',
+#  'norwegian', 'porter', 'portuguese', 'romanian', 'russian', 'spanish', 'swedish', 'turkish']
 
 class Stemmer(TransformerMixin):
     def __init__(self, language=FRENCH):
@@ -50,8 +51,7 @@ class Stemmer(TransformerMixin):
         y is ignored here, but required by convention.
         """
 
-        # TODO: safer and cleaner to do this here, otherwise doing this only once at transform time would be faster.
-        # If done at transform time, the present method would only do `return self`.
+        # TODO: implement fit_transform which would be more optimized (in time) for this step.
         for document in X:
             self.stem_document(document, re_fit=True)
 
