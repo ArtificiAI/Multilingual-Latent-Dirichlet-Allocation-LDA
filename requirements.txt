@@ -1,6 +1,14 @@
 # Python 3.6.6
 # pip install --upgrade pip
-numpy==1.14.3
+
+numpy==1.14.3 
+# https://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy
+
 scikit-learn==0.19.1
+# http://scikit-learn.org/stable/install.html
+
 PyStemmer==1.3.0
+# https://pypi.org/project/PyStemmer/
+
 snowballstemmer==1.2.1
+# https://pypi.org/project/snowballstemmer/
