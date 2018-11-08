@@ -1,7 +1,7 @@
-from sklearn.base import TransformerMixin
+from sklearn.base import BaseEstimator, TransformerMixin
 
 
-class LetterSplitter(TransformerMixin):
+class LetterSplitter(BaseEstimator, TransformerMixin):
 
     def __init__(self):
         pass

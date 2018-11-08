@@ -1,14 +1,13 @@
 import os
-
-from sklearn.base import TransformerMixin
-
 import string
-import unidecode
+
+from sklearn.base import BaseEstimator, TransformerMixin
+import translitcodec
 
 STOPWORDS_FILENAME = "custom_FR_EN_stop_words.txt"
 
 
-class StopWordsRemover(TransformerMixin):
+class StopWordsRemover(BaseEstimator, TransformerMixin):
     def __init__(self, stopwords=None):
         """
         This stop word remover is built so as to be very gentle with the
@@ -46,7 +45,7 @@ class StopWordsRemover(TransformerMixin):
             stop_words_file = os.path.join(current_dir, "..", "data", STOPWORDS_FILENAME)
             with open(stop_words_file) as f:
                 self.stopwords = f.read().split("\n")
-        self.safe_stopwords = [unidecode.unidecode(w).lower() for w in self.stopwords]
+        self.safe_stopwords = [translitcodec.long_encode(w)[0].lower() for w in self.stopwords]
 
         return self
 
@@ -84,7 +83,7 @@ class StopWordsRemover(TransformerMixin):
 
         text += "."  # add a last punctuation to loop 1 last time closing the sentence.
         for char in text:
-            decoded_char = unidecode.unidecode(char).lower()
+            decoded_char = translitcodec.short_encode(char)[0].lower()
 
             char_is_letter = False
             if decoded_char in string.ascii_lowercase:  # Lowercase alphabet
@@ -106,7 +105,7 @@ class StopWordsRemover(TransformerMixin):
                 # Otherwise we're closing a word. Let's process it now.
                 else:
                     full_word = last_word
-                    safe_full_word = unidecode.unidecode(full_word).lower()
+                    safe_full_word = translitcodec.long_encode(full_word)[0].lower()
                     if safe_full_word in self.safe_stopwords:
                         # We remove the word (and the following apostrophe or space if there is one)!
                         full_word = ""

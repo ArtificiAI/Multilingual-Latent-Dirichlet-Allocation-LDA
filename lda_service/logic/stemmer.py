@@ -4,10 +4,10 @@
 # (It's a mix of the MIT License and the BSD 3-Clause License)
 
 from string import punctuation
-import unidecode
 import sys
 
-from sklearn.base import TransformerMixin
+import translitcodec
+from sklearn.base import BaseEstimator, TransformerMixin
 import Stemmer as st
 
 FRENCH = 'french'
@@ -18,7 +18,7 @@ ENGLISH = 'english'
 # ['danish', 'dutch', 'english', 'finnish', 'french', 'german', 'hungarian', 'italian',
 #  'norwegian', 'porter', 'portuguese', 'romanian', 'russian', 'spanish', 'swedish', 'turkish']
 
-class Stemmer(TransformerMixin):
+class Stemmer(BaseEstimator, TransformerMixin):
     def __init__(self, language=FRENCH):
         """
         Create a stemmer (a.k.a. lemmatizer) for a specific language supported by snowball's algorithms.
@@ -92,7 +92,7 @@ class Stemmer(TransformerMixin):
         # stemmed_words = stemmer.stemWords(words_or_punct)
 
         # Stemmed words won't have accents nor capital letters anymore.
-        transformed_words = [unidecode.unidecode(w).lower() for w in doc.split(" ")]
+        transformed_words = [translitcodec.long_encode(w)[0].lower() for w in doc.split(" ")]
         words = doc.split(" ")
         stemmer = st.Stemmer(self.language)
         stemmed_words = stemmer.stemWords(transformed_words)

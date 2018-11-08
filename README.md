@@ -89,6 +89,8 @@ numpy==1.14.3           # BSD-3-Clause and BSD-2-Clause BSD-like and Zlib
 scikit-learn==0.19.1    # BSD-3-Clause
 PyStemmer==1.3.0        # BSD-3-Clause and MIT
 snowballstemmer==1.2.1  # BSD-3-Clause and BSD-2-Clause
+translitcodec==0.4.0    # MIT License
+scipy==1.1.0            # BSD-3-Clause and MIT-like
 ```
 
 ## Unit tests
@@ -100,9 +102,6 @@ Run pytest with `./run_tests.sh`. Coverage:
 Name                                      Stmts   Miss  Cover
 -------------------------------------------------------------
 lda_service/__init__.py                       0      0   100%
-lda_service/application/__init__.py           0      0   100%
-lda_service/data/__init__.py                  0      0   100%
-lda_service/data/load_sample_data.py          8      8     0%
 lda_service/data_utils.py                    39      0   100%
 lda_service/lda_service.py                   31      0   100%
 lda_service/logic/__init__.py                 0      0   100%
@@ -112,7 +111,7 @@ lda_service/logic/letter_splitter.py         36      4    89%
 lda_service/logic/stemmer.py                 60      3    95%
 lda_service/logic/stop_words_remover.py      61      5    92%
 -------------------------------------------------------------
-TOTAL                                       267     27    90%
+TOTAL                                       259     19    93%
 ```
 
 ## License
