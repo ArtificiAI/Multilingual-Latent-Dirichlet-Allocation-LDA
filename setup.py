@@ -1,10 +1,12 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 with open('README.md') as _f:
     _README_MD = _f.read()
 
 with open('requirements.txt') as f:
     _REQUIREMENTS = f.read().strip().splitlines()
+
+_PACKAGES = find_packages(include=['artifici_lda.*'])
 
 _VERSION = '1.0'
 
@@ -32,13 +34,13 @@ setup(
     download_url='https://github.com/ArtificiAI/Multilingual-Latent-Dirichlet-Allocation-LDA/tarball/{}'.format(_VERSION),
     author='Neuraxio Inc.',
     author_email='guillaume.chevalier@neuraxio.com',
-    packages=['artifici_lda'],
+    packages=_PACKAGES,
     test_suite="testing",
     setup_requires=["pytest-runner"],
     tests_require=["pytest", "pytest-cov"],
     install_requires=_REQUIREMENTS,
     include_package_data=True,
-    license='MIT', 
+    license='MIT',
     keywords='Multilingual Latent Dirichlet Allocation (LDA) Pipeline NLP Natural Language Processing'
 )
 
