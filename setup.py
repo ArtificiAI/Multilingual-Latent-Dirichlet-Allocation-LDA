@@ -6,7 +6,7 @@ with open('README.md') as _f:
 with open('requirements.txt') as f:
     _REQUIREMENTS = f.read().strip().splitlines()
 
-_PACKAGES = find_packages(include=['artifici_lda.*'])
+_PACKAGES = find_packages(include=['artifici_lda', 'artifici_lda.*'])
 
 _VERSION = '1.0'
 
