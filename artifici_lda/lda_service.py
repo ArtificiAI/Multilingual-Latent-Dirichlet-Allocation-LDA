@@ -1,10 +1,10 @@
-from lda_service.data_utils import link_topics_and_weightings, get_top_comments, split_1_grams_from_n_grams, \
+from artifici_lda.data_utils import link_topics_and_weightings, get_top_comments, split_1_grams_from_n_grams, \
     get_lda_params_with_specific_n_cluster_or_language, get_word_weightings
-from lda_service.logic.letter_splitter import LetterSplitter
-from lda_service.logic.stop_words_remover import StopWordsRemover
-from lda_service.logic.stemmer import Stemmer, FRENCH
-from lda_service.logic.lda import LDA
-from lda_service.logic.count_vectorizer import CountVectorizer
+from artifici_lda.logic.letter_splitter import LetterSplitter
+from artifici_lda.logic.stop_words_remover import StopWordsRemover
+from artifici_lda.logic.stemmer import Stemmer, FRENCH
+from artifici_lda.logic.lda import LDA
+from artifici_lda.logic.count_vectorizer import CountVectorizer
 
 from sklearn.pipeline import Pipeline
 

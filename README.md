@@ -6,7 +6,7 @@ This project is for text clustering using the Latent Dirichlet Allocation (LDA) 
 
 ```python
 
-from lda_service.lda_service import train_lda_pipeline_default
+from artifici_lda.lda_service import train_lda_pipeline_default
 
 
 FR_STOPWORDS = [
@@ -98,20 +98,20 @@ scipy==1.1.0            # BSD-3-Clause and MIT-like
 Run pytest with `./run_tests.sh`. Coverage:
 
 ```
------------ coverage: platform linux, python 3.6.6-final-0 -----------
-Name                                      Stmts   Miss  Cover
--------------------------------------------------------------
-lda_service/__init__.py                       0      0   100%
-lda_service/data_utils.py                    39      0   100%
-lda_service/lda_service.py                   31      0   100%
-lda_service/logic/__init__.py                 0      0   100%
-lda_service/logic/count_vectorizer.py         9      0   100%
-lda_service/logic/lda.py                     23      7    70%
-lda_service/logic/letter_splitter.py         36      4    89%
-lda_service/logic/stemmer.py                 60      3    95%
-lda_service/logic/stop_words_remover.py      61      5    92%
--------------------------------------------------------------
-TOTAL                                       259     19    93%
+----------- coverage: platform linux, python 3.6.7-final-0 -----------
+Name                                       Stmts   Miss  Cover
+--------------------------------------------------------------
+artifici_lda/__init__.py                       0      0   100%
+artifici_lda/data_utils.py                    39      0   100%
+artifici_lda/lda_service.py                   31      0   100%
+artifici_lda/logic/__init__.py                 0      0   100%
+artifici_lda/logic/count_vectorizer.py         9      0   100%
+artifici_lda/logic/lda.py                     23      7    70%
+artifici_lda/logic/letter_splitter.py         36      4    89%
+artifici_lda/logic/stemmer.py                 60      3    95%
+artifici_lda/logic/stop_words_remover.py      61      5    92%
+--------------------------------------------------------------
+TOTAL                                        259     19    93%
 ```
 
 ## License

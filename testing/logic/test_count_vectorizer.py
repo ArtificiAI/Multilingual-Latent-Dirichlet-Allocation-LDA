@@ -1,7 +1,7 @@
-from lda_service.data_utils import get_params_from_prefix_dict
-from lda_service.lda_service import LDA_PIPELINE_PARAMS_WORDS
-from lda_service.logic.count_vectorizer import CountVectorizer
-from tests.const_utils import \
+from artifici_lda.data_utils import get_params_from_prefix_dict
+from artifici_lda.lda_service import LDA_PIPELINE_PARAMS_WORDS
+from artifici_lda.logic.count_vectorizer import CountVectorizer
+from testing.const_utils import \
     CATS_DOGS_COMMENTS_IN_FRENCH_WITHOUT_STOPWORDS_STEMMED, \
     CATS_DOGS_COMMENTS_IN_FRENCH_WITHOUT_STOPWORDS_STEMMED_VECTORIZED, \
     CATS_DOGS_COMMENTS_IN_FRENCH_WITHOUT_STOPWORDS_STEMMED_VECTORIZED_LDA_TOPICS_INVERSE_TRANSFORM_1, \

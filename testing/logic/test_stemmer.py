@@ -1,5 +1,5 @@
-from lda_service.logic.stemmer import Stemmer, FRENCH
-from tests.const_utils import \
+from artifici_lda.logic.stemmer import Stemmer, FRENCH
+from testing.const_utils import \
     CATS_DOGS_COMMENTS_IN_FRENCH_WITHOUT_STOPWORDS, \
     CATS_DOGS_COMMENTS_IN_FRENCH_WITHOUT_STOPWORDS_STEMMED, \
     CATS_DOGS_COMMENTS_IN_FRENCH_WITHOUT_STOPWORDS_STEMMED_THEN_UNSTEMMED, \

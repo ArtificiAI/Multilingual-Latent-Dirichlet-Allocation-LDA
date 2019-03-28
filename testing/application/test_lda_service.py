@@ -1,8 +1,8 @@
-from lda_service.lda_service import \
+from artifici_lda.lda_service import \
     train_lda_pipeline_default, \
     train_lda_pipeline_on_words
-from lda_service.logic.stemmer import FRENCH
-from tests.const_utils import \
+from artifici_lda.logic.stemmer import FRENCH
+from testing.const_utils import \
     CATS_DOGS_COMMENTS_IN_FRENCH_NORMAL, \
     CATS_DOGS_LABELS_A, \
     CATS_DOGS_LABELS_B, \
