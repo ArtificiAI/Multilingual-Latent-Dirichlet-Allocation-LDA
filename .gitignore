@@ -95,3 +95,4 @@ venv/*
 lda_service/data/*
 .pytest_cache/
 
+.vscode/settings.json

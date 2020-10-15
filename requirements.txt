@@ -1,23 +1,40 @@
 # Python 3.6.6
+# Python 3.7.9
 # pip install --upgrade pip
 
-numpy==1.14.3 
+# numpy==1.14.3 
+numpy==1.19.1
 # https://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy
 
-scikit-learn==0.19.1
+# scikit-learn==0.19.1
+scikit_learn==0.23.2
 # http://scikit-learn.org/stable/install.html
 
-PyStemmer==1.3.0
+# PyStemmer==1.3.0
+PyStemmer==2.0.1
 # https://pypi.org/project/PyStemmer/
 
-snowballstemmer==1.2.1
+# snowballstemmer==1.2.1
+snowballstemmer==2.0.0
 # https://pypi.org/project/snowballstemmer/
 
-translitcodec==0.4.0
+# translitcodec==0.4.0
+translitcodec==0.5.2
 # https://pypi.org/project/translitcodec/
 
-scipy==1.1.0
+# scipy==1.1.0
+scipy==1.5.2
 # https://pypi.org/project/scipy/
+
+chardet==3.0.4
+matplotlib==3.2.2
+pandas==1.1.0
 
 pytest==4.0.1
 pytest-cov==2.6.0
+python-dateutil==2.7.3
+pytz==2017.2
+cycler==0.10
+kiwisolver==1.0.1
+pyparsing==2.0.1
+
