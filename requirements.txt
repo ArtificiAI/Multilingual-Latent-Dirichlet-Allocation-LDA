@@ -3,7 +3,7 @@
 # pip install --upgrade pip
 
 # numpy==1.14.3 
-numpy==1.19.1
+numpy==1.22.0
 # https://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy
 
 # scikit-learn==0.19.1
