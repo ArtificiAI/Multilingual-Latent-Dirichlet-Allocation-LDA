@@ -38,3 +38,4 @@ cycler==0.10
 kiwisolver==1.0.1
 pyparsing==2.0.1
 
+setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
