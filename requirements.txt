@@ -23,7 +23,7 @@ translitcodec==0.5.2
 # https://pypi.org/project/translitcodec/
 
 # scipy==1.1.0
-scipy==1.5.2
+scipy==1.10.0rc1
 # https://pypi.org/project/scipy/
 
 chardet==3.0.4
