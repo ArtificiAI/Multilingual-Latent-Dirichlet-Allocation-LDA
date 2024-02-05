@@ -89,7 +89,7 @@ def train_lda_pipeline_on_words(comments, n_topics=2, language=FRENCH, stopwords
     top_comments = get_top_comments(comments, transformed_comments)
 
     # Extract information about data
-    topic_words = lda_pipeline.inverse_transform(X=None)
+    topic_words = lda_pipeline.inverse_transform(Xt=n_topics)
     topic_words_weighting = get_word_weightings(lda_pipeline)
     topics_words_and_weightings = link_topics_and_weightings(topic_words, topic_words_weighting)
 

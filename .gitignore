@@ -96,3 +96,4 @@ lda_service/data/*
 .pytest_cache/
 
 .vscode/settings.json
+artifici_lda/data/*
