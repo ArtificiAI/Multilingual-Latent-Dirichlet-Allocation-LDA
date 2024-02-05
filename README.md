@@ -85,12 +85,12 @@ You need to bring your own list of stop words. That could be achieved by computi
 ## Dependencies and their license
 
 ```
-numpy==1.14.3           # BSD-3-Clause and BSD-2-Clause BSD-like and Zlib
-scikit-learn==0.19.1    # BSD-3-Clause
-PyStemmer==1.3.0        # BSD-3-Clause and MIT
-snowballstemmer==1.2.1  # BSD-3-Clause and BSD-2-Clause
-translitcodec==0.4.0    # MIT License
-scipy==1.1.0            # BSD-3-Clause and MIT-like
+numpy==1.26.3           # BSD-3-Clause and BSD-2-Clause BSD-like and Zlib
+scikit-learn==1.4.0     # BSD-3-Clause
+PyStemmer==2.2.0.1      # BSD-3-Clause and MIT
+snowballstemmer==2.2.0  # BSD-3-Clause and BSD-2-Clause
+translitcodec==0.7.0    # MIT License
+scipy==1.12.0           # BSD-3-Clause and MIT-like
 ```
 
 ## Unit tests
