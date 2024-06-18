@@ -1,6 +1,6 @@
 numpy==1.26.3
 PyStemmer==2.2.0.1
-scikit_learn==1.4.0
+scikit_learn==1.5.0
 setuptools==68.2.2
 translitcodec==0.7.0
 snowballstemmer==2.2.0
